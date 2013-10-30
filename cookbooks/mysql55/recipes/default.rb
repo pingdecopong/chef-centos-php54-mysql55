@@ -19,3 +19,11 @@ service "mysqld" do
   supports :status => true, :restart => true, :reload => true
   action [ :enable, :start ]
 end
+
+bash "mysql_role" do
+  code <<-"EOH"
+    mysql -u root -e "grant all privileges on *.* to root@'%' identified by '' with grant option;"
+    mysql -u root -e "flush privileges;"
+  EOH
+  action :run
+end
